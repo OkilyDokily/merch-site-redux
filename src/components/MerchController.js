@@ -5,6 +5,7 @@ import MerchDetails from './MerchDetails';
 import EditMerch from './EditMerch';
 import Cart from './Cart';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class MerchController extends React.Component {
   constructor() {
@@ -14,7 +15,7 @@ class MerchController extends React.Component {
       merchList: [],
       details: null,
       cartList: [],
-      purchased:false
+      purchased: false
     }
   }
 
@@ -47,7 +48,7 @@ class MerchController extends React.Component {
     const quantity = arr[splitPoint].quantity;
     this.props.onDecreaseItemsInCart(quantity);
     arr.splice(splitPoint, 1);
-    this.setState({ cartList: arr});
+    this.setState({ cartList: arr });
   }
 
   handleAddMerch = (item) => {
@@ -66,7 +67,7 @@ class MerchController extends React.Component {
   handleDeleteMerch = (item) => {
     const arr = this.state.merchList;
     const index = this.state.merchList.findIndex(x => x.id === item.id);
-   
+
     const newArr = arr.splice(index, arr)
     this.setState({ merchList: newArr, currentComponent: "MerchList" });
   }
@@ -76,7 +77,7 @@ class MerchController extends React.Component {
   }
 
   handlePurchase = () => {
-    
+
     let cart = this.state.cartList;
     let items = this.state.merchList;
     for (let i = 0; i < cart.length; i++) {
@@ -85,7 +86,7 @@ class MerchController extends React.Component {
       let itemsIndex = items.findIndex(x => x.id === cartId);
       items[itemsIndex].quantity -= cartQuantity;
     }
-    this.setState({ merchList: items,purchased:true});
+    this.setState({ merchList: items, purchased: true });
   }
 
   getCartItems = () => {
@@ -154,10 +155,11 @@ class MerchController extends React.Component {
 }
 
 MerchController.propTypes = {
- 
+
   onIncreaseItemsInCart: PropTypes.func,
   onDecreaseItemsInCart: PropTypes.func,
- 
+
 }
+MerchController = connect()(MerchController);
 
 export default MerchController;
