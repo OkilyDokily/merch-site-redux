@@ -21,12 +21,10 @@ function MerchDetails(props)
       <p>Name: {props.details.name}</p>
       <p>Description: {props.details.description}</p>
       <p>Quantity: {props.details.quantity}</p>
-      
       <p>You have {quantity} of {props.details.quantity} of these items in your cart</p>
       <button onClick={() => props.onMerchAddToCart(props.details)}>Add 1 Merch to Cart</button>
       <hr />
     </div>
-    
   )
 }
 

@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 
 function Cart(props) {
 
+
+  
+
   const cartStyle = {
     display: "flex",
     flexDirection: "column",

@@ -1,19 +1,28 @@
-let reducer = (state = {}, action) =>  {
-  const { name, description, quantity, id } = action;
+let reducer = (state = { "merchList": {},"cartList":{} }, action) => {
+  const { name, description, quantity, id, purchaseQuantity } = action;
+  const merchList = { ...state.merchList };
+  const cartList = { ...state.cartList };
   switch (action.type) {
     case 'ADD_MERCH':
-      return Object.assign({}, state, {
-        [id]: {
-          name: name,
-          description: description,
-          quantity: quantity,
-          id: id
-        }
-      });
+      
+      merchList[id] = {
+        name: name,
+        description: description,
+        quantity: quantity,
+        id: id
+      };
+      state["merchList"] = merchList;
+      return Object.assign({},state);
     case 'DELETE_MERCH':
-      let newState = { ...state };
-      delete newState[id];
-      return newState;
+      delete merchList[id];
+      state["merchList"] = merchList;
+      return Object.assign({},state);
+    case "ADD_CART":
+      const cartItem = merchList[id];
+      cartList[id] = {...cartItem};
+      cartList[id].purchaseQuantity = purchaseQuantity;
+      state.cartList = cartList;
+      return Object.assign({}, state);
     default:
       return state;
   }
