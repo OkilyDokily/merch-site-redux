@@ -1,5 +1,5 @@
 import CartItem from "./CartItem";
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 
 
 
@@ -38,6 +38,9 @@ function Cart(props) {
       {console.log(props.cart.length)}
       {(!props.isPurchased && Object.keys(props.cart).length > 0) ? <button style={purchaseButtonStyle} onClick={props.onPurchase}><p>Purchase</p></button> : null}
       {props.isPurchased ? <div style={divInButton}>Thanks for your purchase. You should see an itemized receipt in your email soon.</div> : null}
+
+      <hr />
+      {!props.isPurchased ? <button onClick={props.returnToInventory}>Return to Inventory</button> : null}
     </div>
   )
 }

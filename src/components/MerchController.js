@@ -105,9 +105,7 @@ class MerchController extends React.Component {
       case "Cart":
         return (
           <div>
-            <Cart isPurchased={this.state.purchased} onPurchase={this.handlePurchase} onRemoveCart={this.handleRemoveCart} cart={this.props.cartList} />
-            <hr />
-            <button onClick={this.handleChangeComponent.bind(null, "MerchList")}>Return to Inventory</button>
+            <Cart returnToInventory={this.handleChangeComponent.bind(null, "MerchList")} isPurchased={this.state.purchased} onPurchase={this.handlePurchase} onRemoveCart={this.handleRemoveCart} cart={this.props.cartList} />
           </div>
         )
       default:
