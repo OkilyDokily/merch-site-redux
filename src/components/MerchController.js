@@ -21,32 +21,15 @@ class MerchController extends React.Component {
     this.setState({ currentComponent: component });
   };
 
-  handleMerchAddToCart = (item) => {
-
-    const cartArr = this.state.cartList;
-
-    let cartItem = cartArr.find(x => x.id === item.id);
-
-    if (item.quantity !== 0 && cartItem && (cartItem.quantity < item.quantity)) {
-
-      cartItem.quantity = cartItem.quantity + 1;
-      this.props.onIncreaseItemsInCart();
-      this.setState({ cartList: cartArr });
-    }
-    else if (item.quantity !== 0 && !cartItem) {
-      this.props.onIncreaseItemsInCart();
-      cartArr.push({ id: item.id, quantity: 1 })
-      this.setState({ cartList: cartArr });
-    }
+  handleMerchAddToCart = (id) => {
+    const { dispatch } = this.props;
+    dispatch({type:"ADD_CART",id:id});
   }
 
-  handleRemoveAllItemOfTypeFromCart = (id) => {
-    const arr = this.state.cartList
-    const splitPoint = arr.findIndex(x => x.id === id);
-    const quantity = arr[splitPoint].quantity;
-    this.props.onDecreaseItemsInCart(quantity);
-    arr.splice(splitPoint, 1);
-    this.setState({ cartList: arr });
+  handleRemoveCart = (id) => {
+    console.log("bglpafdsafs");
+    const { dispatch } = this.props;
+    dispatch({ type: "DELETE_CART", id: id });
   }
 
   handleAddMerch = (item) => {
@@ -64,7 +47,6 @@ class MerchController extends React.Component {
   }
 
   handleDeleteMerch = (item) => {
-    console.log("item", item);
     const { dispatch } = this.props;
     
     const { id } = item;
@@ -77,16 +59,9 @@ class MerchController extends React.Component {
   }
 
   handlePurchase = () => {
-
-    let cart = this.state.cartList;
-    let items = this.props.merchList;
-    for (let i = 0; i < cart.length; i++) {
-      let cartQuantity = cart[0].quantity;
-      let cartId = cart[0].id;
-      let itemsIndex = items.findIndex(x => x.id === cartId);
-      items[itemsIndex].quantity -= cartQuantity;
-    }
-    this.setState({ merchList: items, purchased: true });
+    const { dispatch } = this.props;
+    dispatch({type:"PURCHASE"});
+    this.setState({ purchased: true });
   }
 
 
@@ -111,7 +86,7 @@ class MerchController extends React.Component {
       case "MerchDetails":
         return (
           <div>
-            <MerchDetails details={this.state.details} cartList={this.state.cartList} onMerchAddToCart={this.handleMerchAddToCart} />
+            <MerchDetails details={this.state.details} purchaseQuantity={this.props.cartList?.[this.state.details.id]?.purchaseQuantity} cartList={this.props.cartList} onMerchAddToCart={this.handleMerchAddToCart} />
             <button className="small" onClick={this.handleChangeComponent.bind(null, "EditMerch")}>Edit this item</button>
             <button className="small" onClick={() => this.handleDeleteMerch(this.state.details)}>Delete this item</button>
             <hr />
@@ -130,7 +105,7 @@ class MerchController extends React.Component {
       case "Cart":
         return (
           <div>
-            <Cart isPurchased={this.state.purchased} onPurchase={this.handlePurchase} onRemoveAllItemsOfTypeFromCart={this.handleRemoveAllItemOfTypeFromCart} cart={this.props.cartList} />
+            <Cart isPurchased={this.state.purchased} onPurchase={this.handlePurchase} onRemoveCart={this.handleRemoveCart} cart={this.props.cartList} />
             <hr />
             <button onClick={this.handleChangeComponent.bind(null, "MerchList")}>Return to Inventory</button>
           </div>

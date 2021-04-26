@@ -15,7 +15,7 @@ function CartItem(props) {
 
     <div style={CartItemStyle}>
       <p>Item name: {props.potentialPurchase.name}</p>
-      <p>Quantity to purchase: {props.potentialPurchase.cartQuantity}</p>
+      <p>Quantity to purchase: {props.potentialPurchase.purchaseQuantity}</p>
       {!props.isPurchased ? <button className="small" onClick={() => props.removeItems(props.potentialPurchase.id)}>Remove these items from cart</button> : null}
     </div>
   )

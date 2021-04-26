@@ -34,8 +34,6 @@ describe('ticketListReducer', () => {
     id: 2
   };
 
-
-
   test('Should return default state if there is no action type passed into the reducer', () => {
     expect(reducer({}, { type: null })).toEqual({});
   });
@@ -123,18 +121,14 @@ describe('ticketListReducer', () => {
   test('Should successfully add a merch item to the cart', () => {
     action = {
       type: 'ADD_CART',
-      id: 1,
-      cartQuantity: 1
+      id: 2
     };
+   
     const result = reducer(currentState, action)
+ 
     expect(result).toEqual({
       "merchList": {
-        1: {
-          name: 'Ryan & Aimen',
-          description: '4b',
-          quantity: 3,
-          id: 1
-        },
+       
         2: {
           name: 'Jasmine and Justine',
           description: 'fine goods',
@@ -143,15 +137,118 @@ describe('ticketListReducer', () => {
         }
       },
       "cartList": {
-        1: {
-          name: 'Ryan & Aimen',
-          description: '4b',
-          quantity: 3,
-          id: 1,
-          cartQuantity:1
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 5,
+          id: 2,
+          purchaseQuantity: 1
         }
         }
     });
   });
 
+  test('Should successfully add a merch item twice to the cart', () => {
+    action = {
+      type: 'ADD_CART',
+      id: 2
+    };
+
+    const result = reducer(currentState, action)
+
+    expect(result).toEqual({
+      "merchList": {
+
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 5,
+          id: 2
+        }
+      },
+      "cartList": {
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 5,
+          id: 2,
+          purchaseQuantity: 2
+        }
+      }
+    });
+  });
+
+  test('Should successfully remove items from the cart', () => {
+    action = {
+      type: 'DELETE_CART',
+      id: 2
+    };
+  
+
+    const result = reducer(currentState, action)
+
+    expect(result).toEqual({
+      "merchList": {
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 5,
+          id: 2
+        }
+      },
+      "cartList": {
+      }
+    });
+  });
+
+  test('Should remove availability of items from store on purchase', () => {
+    action = {
+      type: 'PURCHASE'
+    };
+
+    const state =
+    {
+      "merchList": {
+
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 5,
+          id: 2
+        }
+      },
+      "cartList": {
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 5,
+          id: 2,
+          purchaseQuantity: 1
+        }
+      }
+    }
+
+    const result = reducer(state, action)
+
+    expect(result).toEqual({
+      "merchList": {
+
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 4,
+          id: 2
+        }
+      },
+      "cartList": {
+        2: {
+          name: 'Jasmine and Justine',
+          description: 'fine goods',
+          quantity: 5,
+          id: 2,
+          purchaseQuantity: 1
+        }
+      }
+    });
+  });
 });

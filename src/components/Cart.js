@@ -5,9 +5,6 @@ import PropTypes from 'prop-types';
 
 function Cart(props) {
 
-
-  
-
   const cartStyle = {
     display: "flex",
     flexDirection: "column",
@@ -36,8 +33,10 @@ function Cart(props) {
   return (
     <div style={cartStyle}>
       <h3>Your Online Cart</h3>
-      {props.cart.map(x => <CartItem isPurchased={props.isPurchased} removeItems={props.onRemoveAllItemsOfTypeFromCart} key={x.id} potentialPurchase={x} />)}
-      {(!props.isPurchased && props.cart.length > 0) ? <button style={purchaseButtonStyle} onClick={props.onPurchase}><p>Purchase</p></button> : null}
+      {Object.keys(props.cart).map(key => <CartItem isPurchased={props.isPurchased} removeItems={props.onRemoveCart} key={key} potentialPurchase={props.cart[key]} />)}
+      {console.log(props.isPurchased)}
+      {console.log(props.cart.length)}
+      {(!props.isPurchased && Object.keys(props.cart).length > 0) ? <button style={purchaseButtonStyle} onClick={props.onPurchase}><p>Purchase</p></button> : null}
       {props.isPurchased ? <div style={divInButton}>Thanks for your purchase. You should see an itemized receipt in your email soon.</div> : null}
     </div>
   )
@@ -46,7 +45,7 @@ function Cart(props) {
 Cart.propTypes = {
   // You can declare that a prop is a specific JS primitive. By default, these
   // are all optional.
-  cart: PropTypes.arrayOf(PropTypes.object),
+  cart: PropTypes.object,
   isPurchased: PropTypes.bool,
   onRemoveAllItemsOfTypeFromCart: PropTypes.func,
   id: PropTypes.number,
